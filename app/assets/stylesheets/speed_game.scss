@@ -1,0 +1,34 @@
+// Place all the styles related to the SpeedGame controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+#shape {
+    height:30px;
+    width:30px;
+    display:none;
+    background-color:green;
+    position:relative;
+}
+
+body {
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+}
+
+#border {
+    border:1px black solid;
+    width:500px;
+    height:500px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#gameCanvas {
+    display:none;
+}
+
+#splashScreen {
+    margin-top:100px;
+}
+
+#average {
+    margin-top:12px;
+}

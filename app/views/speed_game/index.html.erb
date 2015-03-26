@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+    <title>Speed</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="speed_game.scss" /> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+</head>
+
+<body>
+
+    <div id="splashScreen">
+        <center><h1>Speed</h1>
+        <p>Test your reaction time!  Click the shapes as fast as you can.</p>
+        <button type="button" class="btn btn-success" id="startButton"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Play</button></center>
+    </div>
+
+    <div class="alert alert-danger" role="alert" id="notClicking">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Why aren't you clicking? :(</span>
+        Why aren't you clicking? :(
+    </div>
+
+    <div id="gameCanvas">
+
+        <center><p id="reactionTime">Your reaction time is </p></center>
+        <div id="border">
+        <div id="shape"></div>
+        </div>
+        <center><p id="average"></p></center>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <!--<script type="text/javascript" src="speed_script.js"></script>-->
+    <script>
+        $("#splashScreen").css("margin-top", $(window).height()/3);
+$("#gameCanvas").css("margin-top", $(window).height()/15);
+$("#notClicking").hide();
+
+$("#startButton").click(function () {
+        $("#splashScreen").hide();
+        $("#gameCanvas").show();
+        makeShape();
+        counter = setInterval(timer, 1000);
+        clickCounter = setInterval(noClick, 1000);
+    });
+
+var clickCount = 5;
+var clickCounter;
+
+function noClick() {
+    if (clickCount == 0) {
+        $("#notClicking").show();
+        clearInterval(counter);
+        clearInterval(clickCounter);
+    } else {
+        clickCount--;
+    }
+}
+
+function resetClick() {
+    clickCount = 5;
+}
+
+var createdTime = 0;
+var clickedTime = 0;
+
+function randomColor() {
+    var hexDec = "0123456789ABCDEF".split("");
+    var color = "#";
+    for (var i = 0; i < 6; i++) {
+        color += hexDec[Math.round(Math.random() * 15)];
+    }
+    return color;
+}
+
+var count = 30;
+var counter;
+
+function timer() {
+    count --;
+    if (count <= 0) {
+        clearInterval(counter);
+        clearInterval(clickCounter);
+        var averageScore = 0;
+        for (var i = 0; i < score.length; i++) {
+            averageScore += score[i]
+        }
+        $("#average").html("Your average reaction time is " + averageScore/score.length + " seconds.");
+        alert("Your average reaction time is " + averageScore/score.length + " seconds.");
+        return;
+    }
+  $("#average").html("You have " + count + " seconds remaining.");
+}
+
+function makeShape () {
+    var delay = Math.random() * 500;
+    var randomLeft = Math.round(Math.random() * 470);
+    var randomTop = Math.round(Math.random() * 470);
+
+    setTimeout(function () {
+        $("#shape").css("backgroundColor", randomColor());
+        $("#shape").css("display", "block")
+        if (Math.random() > 0.5) {
+            $("#shape").css("borderRadius", "100px");
+        } else {
+            $("#shape").css("borderRadius", "0");
+        }
+        $("#shape").css("marginLeft", randomLeft + "px")
+        $("#shape").css("marginTop", randomTop + "px")
+        createdTime = Date.now();
+        }, delay);
+
+}
+
+var score = [];
+
+$("#shape").click(function() {
+    clickedTime = Date.now();
+    this.style.display = "none";
+    $("#reactionTime").html("Your reaction time is " + (clickedTime - createdTime)/1000 + " seconds");
+    score.push((clickedTime - createdTime)/1000);
+    makeShape();
+    resetClick();
+});
+
+    </script>
+</body>
+</html>

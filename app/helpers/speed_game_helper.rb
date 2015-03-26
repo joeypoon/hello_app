@@ -1,0 +1,2 @@
+module SpeedGameHelper
+end
